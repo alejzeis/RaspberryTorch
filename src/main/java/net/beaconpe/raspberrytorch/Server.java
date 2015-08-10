@@ -1,5 +1,6 @@
 package net.beaconpe.raspberrytorch;
 
+import net.beaconpe.raspberrytorch.level.Level;
 import net.beaconpe.raspberrytorch.logging.Logger;
 import net.beaconpe.raspberrytorch.network.JRakLibInterface;
 import net.beaconpe.raspberrytorch.ticker.CallableTask;
@@ -23,6 +24,8 @@ public class Server implements Runnable{
     private String serverName;
     private String motd;
     private boolean debugMode;
+
+    private Level mainLevel;
 
     Server(Properties serverProperties){ //package-private constructor.
         try {
@@ -71,5 +74,9 @@ public class Server implements Runnable{
 
     public Logger getLogger() {
         return logger;
+    }
+
+    public Level getMainLevel() {
+        return mainLevel;
     }
 }
