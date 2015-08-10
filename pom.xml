@@ -10,6 +10,10 @@
             <id>snapshot-repo</id>
             <url>https://raw.githubusercontent.com/BlockServerProject/MavenRepository/master/snapshots</url>
         </repository>
+        <repository>
+            <id>evil-co</id>
+            <url>http://basket.cindyscats.com/content/repositories/releases/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -17,6 +21,11 @@
             <groupId>net.beaconpe.jraklib</groupId>
             <artifactId>JRakLib</artifactId>
             <version>1.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.evilco.mc</groupId>
+            <artifactId>nbt</artifactId>
+            <version>1.0.2</version>
         </dependency>
     </dependencies>
 
@@ -29,6 +38,27 @@
                     <source>1.8</source>
                     <target>1.8</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>2.11</version>
+                <configuration>
+                    <header>com/mycila/maven/plugin/license/templates/LGPL-3.txt</header>
+                    <excludes>
+                        <exclude>**/README</exclude>
+                        <exclude>**/LICENSE</exclude>
+                        <exclude>src/test/resources/**</exclude>
+                        <exclude>src/main/resources/**</exclude>
+                    </excludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
