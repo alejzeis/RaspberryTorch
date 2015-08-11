@@ -30,6 +30,7 @@ public class Server implements Runnable{
 
     private List<Player> players = new ArrayList<>();
     private Level mainLevel;
+    private int nextEntityID = -1;
 
     Server(Properties serverProperties){ //package-private constructor.
         try {
@@ -64,6 +65,50 @@ public class Server implements Runnable{
         ticker.start();
     }
 
+    public void broadcastMessage(String message){
+        synchronized (players){
+            for(Player player : players){
+                player.sendMessage(message);
+            }
+        }
+        logger.info("[Chat] "+message);
+    }
+
+    /**
+     * INTERNAL USE ONLY!
+     * <br>
+     * Adds a player to the server, only for use in JRakLibInterface.
+     * @param player
+     */
+    public void addPlayer(Player player){
+        synchronized (players){
+            players.add(player);
+        }
+    }
+
+    public List<Player> getPlayers(){
+        synchronized (players) {
+            return players;
+        }
+    }
+
+    public Player getPlayerByIdentifier(String identifier){
+        synchronized (players) {
+            for (Player player : players) {
+                if(player.getIdentifier().equals(identifier)){
+                    return player;
+                }
+            }
+        }
+        return null;
+    }
+
+    protected void removePlayer(Player player) {
+        synchronized (players){
+            players.remove(player);
+        }
+    }
+
     public boolean isDebugMode() {
         return debugMode;
     }
@@ -84,32 +129,7 @@ public class Server implements Runnable{
         return mainLevel;
     }
 
-    /**
-     * INTERNAL USE ONLY!
-     * <br>
-     * Adds a player to the server, only for use in JRakLibInterface.
-     * @param player
-     */
-    public void addPlayer(Player player){
-        synchronized (players){
-            players.add(player);
-        }
-    }
-
-    public Player getPlayerByIdentifier(String identifier){
-        synchronized (players) {
-            for (Player player : players) {
-                if(player.getIdentifier().equals(identifier)){
-                    return player;
-                }
-            }
-        }
-        return null;
-    }
-
-    protected void removePlayer(Player player) {
-        synchronized (players){
-            players.remove(player);
-        }
+    public int getNextEntityID() {
+        return nextEntityID++;
     }
 }

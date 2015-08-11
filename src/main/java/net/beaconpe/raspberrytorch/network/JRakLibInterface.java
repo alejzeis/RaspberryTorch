@@ -9,8 +9,7 @@ import net.beaconpe.jraklib.server.ServerInstance;
 import net.beaconpe.raspberrytorch.Player;
 import net.beaconpe.raspberrytorch.RaspberryTorch;
 import net.beaconpe.raspberrytorch.Server;
-import net.beaconpe.raspberrytorch.network.packet.LoginPacket;
-import net.beaconpe.raspberrytorch.network.packet.LoginStatusPacket;
+import net.beaconpe.raspberrytorch.network.packet.*;
 import net.beaconpe.raspberrytorch.utility.Utils;
 
 import java.util.HashMap;
@@ -42,10 +41,19 @@ public class JRakLibInterface implements ServerInstance{
         registerPackets();
     }
 
+    @SuppressWarnings("deprecation")
     private void registerPackets() {
         logger.debug("Registering packets...");
         packets.put(NetworkIds.LOGIN_PACKET, LoginPacket.class);
         packets.put(NetworkIds.LOGIN_STATUS_PACKET, LoginStatusPacket.class);
+        packets.put(NetworkIds.READY_PACKET, ReadyPacket.class);
+        packets.put(NetworkIds.MESSAGE_PACKET, MessagePacket.class);
+
+        packets.put(NetworkIds.MOVE_PLAYER_PACKET, MovePlayerPacket.class);
+
+        packets.put(NetworkIds.CHAT_PACKET, ChatPacket.class);
+        //packets.put(NetworkIds.SIGN_UPDATE_PACKET, SignUpdatePacket.class);
+        packets.put(NetworkIds.ADVENTURE_SETTINGS_PACKET, AdventureSettingsPacket.class);
         logger.info(packets.size()+" packets registered.");
     }
 

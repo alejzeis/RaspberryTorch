@@ -1,6 +1,6 @@
 package net.beaconpe.raspberrytorch.entity;
 
-import net.beaconpe.raspberrytorch.RaspberryTorch;
+import net.beaconpe.raspberrytorch.Server;
 import net.beaconpe.raspberrytorch.level.Location;
 
 /**
@@ -12,10 +12,13 @@ public abstract class Entity extends Location{
     private float yaw;
     private float pitch;
 
-    public Entity(){
-        super(RaspberryTorch.getServerInstance().getMainLevel());
+    private int entityID;
+
+    public Entity(Server server){
+        super(server.getMainLevel());
         yaw = 0;
         pitch = 90;
+        entityID = server.getNextEntityID();
     }
 
     public float getPitch() {
@@ -32,5 +35,9 @@ public abstract class Entity extends Location{
 
     public void setYaw(float yaw) {
         this.yaw = yaw;
+    }
+
+    public int getEntityID() {
+        return entityID;
     }
 }
