@@ -3,10 +3,13 @@ package net.beaconpe.raspberrytorch;
 import net.beaconpe.raspberrytorch.level.Level;
 import net.beaconpe.raspberrytorch.logging.Logger;
 import net.beaconpe.raspberrytorch.network.JRakLibInterface;
+import net.beaconpe.raspberrytorch.network.NetworkIds;
 import net.beaconpe.raspberrytorch.ticker.CallableTask;
 import net.beaconpe.raspberrytorch.ticker.RaspberryTicker;
 
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -25,6 +28,7 @@ public class Server implements Runnable{
     private String motd;
     private boolean debugMode;
 
+    private List<Player> players = new ArrayList<>();
     private Level mainLevel;
 
     Server(Properties serverProperties){ //package-private constructor.
@@ -38,7 +42,7 @@ public class Server implements Runnable{
         logger = new Logger(debugMode);
         ticker = new RaspberryTicker(this, 20);
 
-        logger.info("RaspberryTorch version "+RaspberryTorch.VERSION+" implementing MCPI protocol version 9"); //TODO: Change version
+        logger.info("RaspberryTorch version "+RaspberryTorch.VERSION+" implementing MCPI protocol version "+ NetworkIds.PROTOCOL);
         RaspberryTorch.setServerInstance(this);
         rakLibInterface = new JRakLibInterface(this);
         rakLibInterface.setName(serverName);
@@ -78,5 +82,34 @@ public class Server implements Runnable{
 
     public Level getMainLevel() {
         return mainLevel;
+    }
+
+    /**
+     * INTERNAL USE ONLY!
+     * <br>
+     * Adds a player to the server, only for use in JRakLibInterface.
+     * @param player
+     */
+    public void addPlayer(Player player){
+        synchronized (players){
+            players.add(player);
+        }
+    }
+
+    public Player getPlayerByIdentifier(String identifier){
+        synchronized (players) {
+            for (Player player : players) {
+                if(player.getIdentifier().equals(identifier)){
+                    return player;
+                }
+            }
+        }
+        return null;
+    }
+
+    protected void removePlayer(Player player) {
+        synchronized (players){
+            players.remove(player);
+        }
     }
 }

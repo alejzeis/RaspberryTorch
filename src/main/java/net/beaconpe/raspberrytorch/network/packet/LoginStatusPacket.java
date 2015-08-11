@@ -12,7 +12,9 @@ import java.io.IOException;
  * @author jython234
  */
 public class LoginStatusPacket extends DataPacket{
-
+    public final static int STATUS_OK = 0;
+    public final static int STATUS_SERVER_OUTDATED = 1;
+    public final static int STATUS_CLIENT_OUTDATED = 2;
 
     public int status;
 
